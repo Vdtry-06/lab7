@@ -1,0 +1,23 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:15
+    container_name: postgres-db
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_USER=postgres-3.28
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=Management
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+volumes:
+  postgres-data:
+
+networks:
+  app-network:
+    driver: bridge
