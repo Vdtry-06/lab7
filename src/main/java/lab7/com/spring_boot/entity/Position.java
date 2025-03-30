@@ -4,7 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -13,12 +14,15 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@Table(name = "positions")
 public class Position {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long positionId;
-    String positionName;
+    Long id;
+
+    @Column(nullable = false)
+    String name;
 
     @OneToMany(mappedBy = "position")
-    List<Employee> employees;
+    Set<Employee> employees = new HashSet<>();
 }

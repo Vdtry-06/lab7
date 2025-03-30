@@ -5,7 +5,9 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -14,16 +16,19 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@Table(name = "roles")
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long roleId;
+    Long id;
 
-    String roleName;
+    @Column(nullable = false, unique = true)
+    String name;
+
     String description;
 
     @OneToMany(mappedBy = "role")
-    List<User> users;
+    Set<User> users = new HashSet<>();
 
     @ManyToMany
     @JoinTable(
@@ -31,5 +36,5 @@ public class Role {
             joinColumns = @JoinColumn(name = "role_id"),
             inverseJoinColumns = @JoinColumn(name = "permission_id")
     )
-    List<Permission> permissions = new ArrayList<>();
+    Set<Permission> permissions = new HashSet<>();
 }

@@ -14,29 +14,43 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@Table(name = "employees")
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long employeeId;
+    Long id;
+
+    @Column(nullable = false)
     String firstName;
+
+    @Column(nullable = false)
     String lastName;
+
+    @Temporal(TemporalType.DATE)
+    @Column(nullable = false)
     Date dateOfBirth;
+
     String phoneNumber;
+
     String address;
+
+    @Temporal(TemporalType.DATE)
     Date hireDate;
+
     float salary;
+
     String status;
 
-    @OneToOne
-    @JoinColumn(name = "user_id",referencedColumnName = "user_id")
-    User user;
-
     @ManyToOne
-    @JoinColumn(name = "position_id",nullable = false)
-    Position position;
-
-    @ManyToOne
-    @JoinColumn(name = "department_id",nullable = false)
+    @JoinColumn(name = "department_id", nullable = false)
     Department department;
+
+    @ManyToOne
+    @JoinColumn(name = "position_id", nullable = false)
+    private Position position;
+
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
 }
