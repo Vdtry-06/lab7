@@ -4,9 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -27,6 +25,6 @@ public class Permission {
 
     String description;
 
-    @ManyToMany(mappedBy = "permissions")
-    private Set<Role> roles = new HashSet<>();
+    @OneToMany(mappedBy = "permission", cascade = CascadeType.ALL, orphanRemoval = true)
+    Set<RolePermission> rolePermissions = new HashSet<>();
 }

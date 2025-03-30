@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.text.DecimalFormat;
 import java.util.Date;
 
 @Entity
@@ -47,10 +46,9 @@ public class Employee {
 
     @ManyToOne
     @JoinColumn(name = "position_id", nullable = false)
-    private Position position;
+    Position position;
 
     @OneToOne
     @JoinColumn(name = "user_id")
-    private User user;
-
+    User user;
 }

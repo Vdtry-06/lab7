@@ -30,11 +30,6 @@ public class Role {
     @OneToMany(mappedBy = "role")
     Set<User> users = new HashSet<>();
 
-    @ManyToMany
-    @JoinTable(
-            name = "role_permissions",
-            joinColumns = @JoinColumn(name = "role_id"),
-            inverseJoinColumns = @JoinColumn(name = "permission_id")
-    )
-    Set<Permission> permissions = new HashSet<>();
+    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, orphanRemoval = true)
+    Set<RolePermission> rolePermissions = new HashSet<>();
 }
