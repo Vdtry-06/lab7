@@ -37,7 +37,7 @@ public class Employee {
     @Temporal(TemporalType.DATE)
     Date hireDate;
 
-    float salary;
+    Float salary;
 
     String status;
 
