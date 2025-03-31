@@ -1,10 +1,15 @@
 package lab7.com.spring_boot.service;
 
 import lab7.com.spring_boot.dto.request.EmployeeRequest;
+import lab7.com.spring_boot.dto.response.EmployeeDepartmentResponse;
+import lab7.com.spring_boot.dto.response.EmployeePositionResponse;
 import lab7.com.spring_boot.dto.response.EmployeeResponse;
+import lab7.com.spring_boot.entity.Department;
 import lab7.com.spring_boot.entity.Employee;
 import lab7.com.spring_boot.mapper.EmployeeMapper;
+import lab7.com.spring_boot.repository.DepartmentRepository;
 import lab7.com.spring_boot.repository.EmployeeRepository;
+import lab7.com.spring_boot.repository.PositionRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -12,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +26,8 @@ import java.util.List;
 public class EmployeeService {
     EmployeeRepository employeeRepository;
     EmployeeMapper employeeMapper;
+    DepartmentRepository departmentRepository;
+    PositionRepository positionRepository;
 
     public EmployeeResponse addEmployee(EmployeeRequest request) {
         Employee employee = employeeMapper.toEmployee(request);
@@ -70,5 +78,25 @@ public class EmployeeService {
     public EmployeeResponse getEmployeeById(Long id) {
         Employee employee = employeeRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Employee not found"));
         return employeeMapper.toEmployeeResponse(employee);
+    }
+
+    public EmployeeDepartmentResponse getEmployeesByDepartmentId(Long departmentId) {
+        departmentRepository.findById(departmentId)
+                .orElseThrow(() -> new IllegalArgumentException("Department Not Found"));
+        List<Employee> employees = employeeRepository.findByDepartmentId(departmentId);
+        return EmployeeDepartmentResponse.builder()
+                .departmentId(departmentId)
+                .employees(employees.stream().map(employeeMapper::toEmployeeResponse).toList())
+                .build();
+    }
+
+    public EmployeePositionResponse getEmployeesByPositionId(Long positionId) {
+        positionRepository.findById(positionId)
+                .orElseThrow(() -> new IllegalArgumentException("Position Not Found"));
+        List<Employee> employees = employeeRepository.findByPositionId(positionId);
+        return EmployeePositionResponse.builder()
+                .positionId(positionId)
+                .employees(employees.stream().map(employeeMapper::toEmployeeResponse).toList())
+                .build();
     }
 }
